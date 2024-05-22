@@ -1,6 +1,6 @@
 package gll1zu.futoverseny;
 
-import ch.qos.logback.core.model.Model;
+import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,11 +78,27 @@ public class RunnerRestController {
     }
 
     @GetMapping("/versenyek")
-    public String listVersenyek() {
+    public String listVersenyek(Model model) { // Model paraméter hozzáadása
         List<VersenyEntity> versenyek = versenyRepository.findAll();
-        return "versenyek";
+        model.addAttribute("versenyek", versenyek); // Adatok hozzáadása a modelhez
+        return "versenyek"; // Thymeleaf sablon neve
     }
 
+        @GetMapping("/verseny/{versenyId}")
+        public String getVersenyDetails(@PathVariable("versenyId") long versenyId, Model model) {
+            // Ellenőrizzük, hogy a megadott azonosítóval létezik-e verseny
+            Optional<VersenyEntity> optionalVerseny = versenyRepository.findById(versenyId);
+            if (optionalVerseny.isPresent()) {
+                VersenyEntity verseny = optionalVerseny.get();
+                // Verseny részleteinek lekérése az adatbázisból
+                List<EredmenyEntity> eredmenyek = eredmenyRepository.findByVersenyId(versenyId);
+                model.addAttribute("verseny", verseny);
+                model.addAttribute("eredmenyek", eredmenyek);
+                return "verseny_reszletek"; // Thymeleaf sablon neve
+            } else {
+                return "redirect:/"; //
+            }
+        }
 
 
     @PostMapping("/addRunner")
