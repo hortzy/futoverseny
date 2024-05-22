@@ -76,6 +76,14 @@ public class RunnerRestController {
         return ResponseEntity.ok(averageTime);
     }
 
+    @GetMapping("/versenyek")
+    public String listVersenyek(Model model) {
+        List<VersenyEntity> versenyek = versenyRepository.findAll();
+        model.addAttribute("versenyek", versenyek);
+        return "versenyek";
+    }
+
+
     @PostMapping("/addRunner")
     public ResponseEntity<String> addRunner( @RequestBody FutoRequest futoRequest) {
         FutoEntity futo = new FutoEntity();

@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Versenyek listája</title>
 </head>
 <body>
-
+    <h1>Versenyek Listája</h1>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Verseny neve</th>
+            <th>Távolság (km)</th>
+            <th>Verseny azonosító</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="verseny : ${versenyek}">
+            <td th:text="${verseny.versenyNev}"></td>
+            <td th:text="${verseny.versenyTav}"></td>
+            <td><a th:href="@{'/verseny/' + ${verseny.versenyId}}" th:text="${verseny.versenyId}">Azonosító</a></td>
+        </tr>
 </body>
 </html>
