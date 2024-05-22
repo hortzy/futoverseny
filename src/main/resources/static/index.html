@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Futóversenyek</title>
 </head>
 <body>
+<h1>Versenyek</h1>
+
+<!-- Hivatkozás a Versenyek listázása oldalra -->
+<a th:href="@{/versenyek}">Versenyek listája</a>
+
+<!-- Hivatkozás az Új verseny létrehozása oldalra -->
+<a th:href="@{/ujVerseny}">Új verseny létrehozása</a>
+
+<!-- Hivatkozás a Verseny részletei oldalra (pl. egy konkrét versenyhez) -->
+<a th:href="@{/verseny/{versenyId}(versenyId=1)}">Verseny részletei</a>
 
 </body>
 </html>
