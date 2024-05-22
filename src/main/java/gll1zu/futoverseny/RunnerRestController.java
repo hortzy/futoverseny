@@ -1,5 +1,6 @@
 package gll1zu.futoverseny;
 
+import ch.qos.logback.core.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,11 +78,11 @@ public class RunnerRestController {
     }
 
     @GetMapping("/versenyek")
-    public String listVersenyek(Model model) {
+    public String listVersenyek() {
         List<VersenyEntity> versenyek = versenyRepository.findAll();
-        model.addAttribute("versenyek", versenyek);
         return "versenyek";
     }
+
 
 
     @PostMapping("/addRunner")
@@ -130,6 +131,15 @@ public class RunnerRestController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("A megadott verseny vagy résztvevő nem található.");
         }
+    }
+
+    @PostMapping("/addRace")
+    public ResponseEntity<String> addRace(@RequestBody NewRaceRequest request) {
+        VersenyEntity verseny = new VersenyEntity();
+        verseny.setVersenyNev(request.getVersenyNev());
+        verseny.setVersenyTav(request.getVersenyTav());
+        versenyRepository.save(verseny);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Az új verseny sikeresen létrehozva azonosítóval: " + verseny.getVersenyId());
     }
 
 
@@ -223,5 +233,25 @@ public class RunnerRestController {
         }
     }
 
+    public static class NewRaceRequest {
+        private String versenyNev;
+        private int versenyTav;
+
+        public String getVersenyNev() {
+            return versenyNev;
+        }
+
+        public void setVersenyNev(String versenyNev) {
+            this.versenyNev = versenyNev;
+        }
+
+        public int getVersenyTav() {
+            return versenyTav;
+        }
+
+        public void setVersenyTav(int versenyTav) {
+            this.versenyTav = versenyTav;
+        }
+    }
 
 }
